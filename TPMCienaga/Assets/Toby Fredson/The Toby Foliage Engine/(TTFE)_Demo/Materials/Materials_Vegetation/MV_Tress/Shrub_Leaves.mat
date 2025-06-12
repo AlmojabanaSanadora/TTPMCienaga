@@ -305,7 +305,7 @@ Material:
     - _GlobalSeasonControl: 1
     - _GlobalWind1: 1
     - _GlobalWindSpeed: 1
-    - _GlobalWindStrength: 1
+    - _GlobalWindStrength: 0.09
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -445,7 +445,7 @@ Material:
     - _TranslucencyFluffiness: 0
     - _TranslucencyMapOffset: 0
     - _TranslucencyMapScale: 1
-    - _TranslucencyPower: 4
+    - _TranslucencyPower: 1
     - _TranslucencyRange: 1
     - _TranslucencyTreeTangents: 1
     - _Turbulence1: 1
@@ -459,7 +459,7 @@ Material:
     - _VertexB: 0
     - _VertexG: 0
     - _VertexGreenContrast: 1
-    - _VertexLighting: 3.2
+    - _VertexLighting: 5.23
     - _VertexNormalWarpAmount: 0
     - _VertexNormals: 1
     - _VertexPositionYOff: 0

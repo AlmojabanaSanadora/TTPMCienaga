@@ -560,7 +560,7 @@ Material:
     - _GlobalWindPower: 1
     - _GlobalWindPowie: 1
     - _GlobalWindStrengh: 1
-    - _GlobalWindStrength: 1
+    - _GlobalWindStrength: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
