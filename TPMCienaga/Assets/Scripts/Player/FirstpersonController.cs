@@ -4,13 +4,13 @@ using UnityEngine.InputSystem;
 public class FirstpersonController : MonoBehaviour
 {
     [Header("Movimiento")]
-    public float movementSpeed = 2f;
+    public float movementSpeed = 3f;
     public float sprintMultiplier = 1.5f;
     public float gravity = -9.8f;
 
     [Header("Cámara")]
     public Transform cameraTransform;
-    public float sensitivity = 0.5f;
+    public float sensitivity = 0.2f;
     public float minLimit = -80f;
     public float maxLimit = 80f;
 

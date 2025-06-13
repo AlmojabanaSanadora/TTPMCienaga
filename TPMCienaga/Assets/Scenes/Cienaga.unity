@@ -5024,7 +5024,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2114845521}
   m_Layer: 0
-  m_Name: player(temporal)
+  m_Name: player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
