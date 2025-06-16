@@ -4,19 +4,19 @@ using UnityEngine.InputSystem;
 public class FirstpersonController : MonoBehaviour
 {
     [Header("Movimiento")]
-    public float movementSpeed = 3f;
-    public float sprintMultiplier = 1.5f;
+    public float movementSpeed = 4f;
+    public float sprintMultiplier = 2.5f;
     public float gravity = -9.8f;
 
     [Header("Cámara")]
     public Transform cameraTransform;
-    public float sensitivity = 0.2f;
+    public float sensitivity = 5f;
     public float minLimit = -80f;
     public float maxLimit = 80f;
 
     [Header("Head Bob")]
-    public float bobFrequency = 10f;
-    public float bobAmplitude = 0.05f;
+    public float bobFrequency = 11f;
+    public float bobAmplitude = 0.07f;
 
     private PlayerInput _inputAction;
     private CharacterController _characaterController;
