@@ -7,12 +7,12 @@ public class HolyWaterFountain : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             PlayerInventory inventory = other.GetComponent<PlayerInventory>();
-            if (inventory != null && !inventory.hasHolyWater)
+            if (inventory != null && inventory.CanPickupHolyWater())
             {
                 inventory.PickupHolyWater();
-                Debug.Log("Agua bendita recogida en la iglesia.");
-                // Aquí puedes reproducir un sonido o mostrar un mensaje
+                Debug.Log("Agua bendita recogida.");
             }
         }
     }
 }
+
