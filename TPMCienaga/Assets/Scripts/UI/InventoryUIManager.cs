@@ -12,7 +12,7 @@ public class InventoryUIManager : MonoBehaviour
     }
 
     public GameObject slotPrefab;        // Prefab del slot
-    public Transform contentPanel;       // Panel donde se colocan los ítems
+    public Transform contentPanel;       // Panel donde se colocan los ï¿½tems
     public List<InventoryItemIcon> itemIcons = new List<InventoryItemIcon>();
 
     private int itemCount = 0;
