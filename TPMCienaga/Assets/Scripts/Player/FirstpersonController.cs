@@ -21,9 +21,12 @@ public class FirstpersonController : MonoBehaviour
 
     [Header("Estamina")]
     public float maxStamina = 20f;
-    public float staminaRecoveryTime = 22f; 
+    public float staminaRecoveryTime = 22f;
     public Image staminaBar;
     public GameObject staminaWarningText;
+
+    [Header("Referencias")]
+    public PlayerInventory playerInventory; // ← NUEVO: referencia al inventario
 
     private float currentStamina;
     private bool canSprint => currentStamina > 0f;
@@ -73,6 +76,10 @@ public class FirstpersonController : MonoBehaviour
 
     private void Update()
     {
+        // Si el inventario está abierto, no mover ni cámara ni personaje
+        if (playerInventory != null && playerInventory.IsInventoryOpen())
+            return;
+
         HandleStamina();
         Movement();
         Look();

@@ -1,14 +1,16 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
     public bool hasHolyWater = false;
     public bool hasCrucifix = false;
 
-    public InventoryUIManager uiManager;      // Arrastra el UIManager aquí en el Inspector
-    public GameObject pickupPromptUI;         // Arrastra el texto "Presiona B para recoger" aquí
+    public InventoryUIManager uiManager;
+    public GameObject pickupPromptUI;
+    public GameObject inventoryPanel;
 
     private CrucifixPickup nearbyCrucifix;
+    private bool isInventoryOpen = false;
 
     public bool CanPickupHolyWater() => !hasHolyWater;
     public bool CanPickupCrucifix() => !hasCrucifix;
@@ -40,8 +42,12 @@ public class PlayerInventory : MonoBehaviour
 
     private void Update()
     {
-        // Presionar B para recoger el crucifijo si estás cerca y no tienes uno
-        if (Input.GetKeyDown(KeyCode.B) && nearbyCrucifix != null && CanPickupCrucifix())
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            ToggleInventory();
+        }
+
+        if (Input.GetKeyDown(KeyCode.B) && nearbyCrucifix != null && CanPickupCrucifix() && !isInventoryOpen)
         {
             PickupCrucifix();
             Destroy(nearbyCrucifix.gameObject);
@@ -51,6 +57,21 @@ public class PlayerInventory : MonoBehaviour
                 pickupPromptUI.SetActive(false);
         }
     }
+
+    private void ToggleInventory()
+    {
+        isInventoryOpen = !isInventoryOpen;
+
+        if (inventoryPanel != null)
+            inventoryPanel.SetActive(isInventoryOpen);
+
+        Time.timeScale = isInventoryOpen ? 0f : 1f;
+
+        Cursor.lockState = isInventoryOpen ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = isInventoryOpen;
+    }
+
+    public bool IsInventoryOpen() => isInventoryOpen;
 
     private void OnTriggerEnter(Collider other)
     {
