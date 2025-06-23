@@ -15,7 +15,7 @@ MonoBehaviour:
   active: 1
   lift:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 0.94234896, y: 1, z: 0.9859516, w: 0}
   gamma:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
@@ -103,7 +103,7 @@ MonoBehaviour:
     m_Value: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.488
+    m_Value: 0.5
   clamp:
     m_OverrideState: 1
     m_Value: 0.05
@@ -481,7 +481,7 @@ MonoBehaviour:
   active: 1
   distance:
     m_OverrideState: 1
-    m_Value: 64
+    m_Value: 96
   baseHeight:
     m_OverrideState: 1
     m_Value: 0
@@ -490,7 +490,7 @@ MonoBehaviour:
     m_Value: 50
   enableGround:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   groundHeight:
     m_OverrideState: 1
     m_Value: 0
@@ -508,7 +508,7 @@ MonoBehaviour:
     m_Value: 1
   enableMainLightContribution:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   anisotropy:
     m_OverrideState: 1
     m_Value: 0.4
@@ -520,7 +520,7 @@ MonoBehaviour:
     m_Value: {r: 1, g: 1, b: 1, a: 1}
   enableAdditionalLightsContribution:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
   maxSteps:
     m_OverrideState: 1
     m_Value: 128
@@ -615,7 +615,7 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 0.82374346, y: 1, z: 0.8991042, w: 0}
   midtones:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
@@ -650,7 +650,7 @@ MonoBehaviour:
   master:
     m_OverrideState: 1
     m_Value:
-      <length>k__BackingField: 2
+      <length>k__BackingField: 3
       m_Loop: 0
       m_ZeroValue: 0
       m_Range: 1
@@ -661,6 +661,15 @@ MonoBehaviour:
           time: 0
           value: 0
           inSlope: 0
+          outSlope: 1
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.3004695
+          value: 0.27184469
+          inSlope: 1
           outSlope: 1
           tangentMode: 0
           weightedMode: 0
@@ -920,7 +929,7 @@ MonoBehaviour:
   active: 1
   intensity:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.2
 --- !u!114 &5426950619145779145
 MonoBehaviour:
   m_ObjectHideFlags: 3
