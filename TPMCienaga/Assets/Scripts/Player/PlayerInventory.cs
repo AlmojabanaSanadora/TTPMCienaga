@@ -6,10 +6,8 @@ public class PlayerInventory : MonoBehaviour
     public bool hasCrucifix = false;
 
     public InventoryUIManager uiManager;
-    public GameObject pickupPromptUI;
     public GameObject inventoryPanel;
 
-    private CrucifixPickup nearbyCrucifix;
     private bool isInventoryOpen = false;
 
     public bool CanPickupHolyWater() => !hasHolyWater;
@@ -46,16 +44,6 @@ public class PlayerInventory : MonoBehaviour
         {
             ToggleInventory();
         }
-
-        if (Input.GetKeyDown(KeyCode.B) && nearbyCrucifix != null && CanPickupCrucifix() && !isInventoryOpen)
-        {
-            PickupCrucifix();
-            Destroy(nearbyCrucifix.gameObject);
-            nearbyCrucifix = null;
-
-            if (pickupPromptUI != null)
-                pickupPromptUI.SetActive(false);
-        }
     }
 
     private void ToggleInventory()
@@ -66,37 +54,9 @@ public class PlayerInventory : MonoBehaviour
             inventoryPanel.SetActive(isInventoryOpen);
 
         Time.timeScale = isInventoryOpen ? 0f : 1f;
-
         Cursor.lockState = isInventoryOpen ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = isInventoryOpen;
     }
 
     public bool IsInventoryOpen() => isInventoryOpen;
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Crucifix"))
-        {
-            nearbyCrucifix = other.GetComponent<CrucifixPickup>();
-            if (!hasCrucifix && pickupPromptUI != null)
-            {
-                pickupPromptUI.SetActive(true);
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Crucifix"))
-        {
-            if (nearbyCrucifix != null && other.gameObject == nearbyCrucifix.gameObject)
-            {
-                nearbyCrucifix = null;
-                if (pickupPromptUI != null)
-                {
-                    pickupPromptUI.SetActive(false);
-                }
-            }
-        }
-    }
 }
