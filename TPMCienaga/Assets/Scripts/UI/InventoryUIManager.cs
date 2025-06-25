@@ -12,23 +12,37 @@ public class InventoryUIManager : MonoBehaviour
     }
 
     public GameObject slotPrefab;        // Prefab del slot
-    public Transform contentPanel;       // Panel donde se colocan los �tems
+    public Transform contentPanel;       // Panel donde se colocan los ítems
     public List<InventoryItemIcon> itemIcons = new List<InventoryItemIcon>();
 
-    private int itemCount = 0;
+    // Interno: mantiene el control de slots actuales
+    private Dictionary<string, GameObject> itemSlots = new Dictionary<string, GameObject>();
 
     public void AddItemToUI(string itemName)
     {
-        InventoryItemIcon iconData = itemIcons.Find(i => i.itemName == itemName);
-        if (iconData != null)
+        if (itemSlots.ContainsKey(itemName))
         {
-            GameObject newSlot = Instantiate(slotPrefab, contentPanel);
-            Image iconImage = newSlot.transform.Find("Icon").GetComponent<Image>();
-            Text numberText = newSlot.transform.Find("Number").GetComponent<Text>();
+            // Ya existe → solo aumentar el número
+            GameObject slot = itemSlots[itemName];
+            Text numberText = slot.transform.Find("Number").GetComponent<Text>();
+            int currentCount = int.Parse(numberText.text);
+            numberText.text = (currentCount + 1).ToString();
+        }
+        else
+        {
+            // Crear nuevo slot
+            InventoryItemIcon iconData = itemIcons.Find(i => i.itemName == itemName);
+            if (iconData != null)
+            {
+                GameObject newSlot = Instantiate(slotPrefab, contentPanel);
+                Image iconImage = newSlot.transform.Find("Icon").GetComponent<Image>();
+                Text numberText = newSlot.transform.Find("Number").GetComponent<Text>();
 
-            iconImage.sprite = iconData.icon;
-            itemCount++;
-            numberText.text = itemCount.ToString();
+                iconImage.sprite = iconData.icon;
+                numberText.text = "1";
+
+                itemSlots[itemName] = newSlot;
+            }
         }
     }
 
@@ -38,6 +52,6 @@ public class InventoryUIManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        itemCount = 0;
+        itemSlots.Clear();
     }
 }

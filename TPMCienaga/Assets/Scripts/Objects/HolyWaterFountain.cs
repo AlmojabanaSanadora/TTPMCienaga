@@ -1,9 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HolyWaterFountain : MonoBehaviour
 {
     public GameObject pickupPromptUI;
-
     private bool playerInRange = false;
     private PlayerInventory playerInventory;
 
