@@ -30245,15 +30245,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2247228800617605107, guid: d592976252b32694fb4dc81ce5dfe56b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 307.83
+      value: 308.22
       objectReference: {fileID: 0}
     - target: {fileID: 2247228800617605107, guid: d592976252b32694fb4dc81ce5dfe56b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.15
+      value: -2.2
       objectReference: {fileID: 0}
     - target: {fileID: 2247228800617605107, guid: d592976252b32694fb4dc81ce5dfe56b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 348.94
+      value: 352.08
       objectReference: {fileID: 0}
     - target: {fileID: 2247228800617605107, guid: d592976252b32694fb4dc81ce5dfe56b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -100460,7 +100460,15 @@ MonoBehaviour:
   staminaRecoveryTime: 10
   staminaBar: {fileID: 209936105}
   staminaWarningText: {fileID: 1526206329}
+  crouchHeight: 1
+  standHeight: 2
+  crouchSpeed: 2
   playerInventory: {fileID: 1633019924}
+  playerCamera: {fileID: 2104533681}
+  defaultFOV: 60
+  crouchFOV: 45
+  fovLerpSpeed: 5
+  crouchSensitivityMultiplier: 0.5
 --- !u!143 &1633019923
 CharacterController:
   m_ObjectHideFlags: 0
