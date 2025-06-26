@@ -47,22 +47,27 @@ public class DemonAI : MonoBehaviour
         }
 
         Vector3 rangeToWalk = transform.position - walkArea;
-        if (rangeToWalk.magnitude < 1f)
+        if (rangeToWalk.magnitude < 4f)
         {
             walkPointState = false;
         }
     }
 
     private void PatrolArea()
+{
+    float randomX = Random.Range(-walkPointRadius, walkPointRadius);
+    float randomZ = Random.Range(-walkPointRadius, walkPointRadius);
+
+    Vector3 potentialWalkArea = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+    // Validate the position using NavMesh.SamplePosition
+    NavMeshHit hit;
+    if (NavMesh.SamplePosition(potentialWalkArea, out hit, 2f, NavMesh.AllAreas))
     {
-        float randomX = Random.Range(-walkPointRadius, walkPointRadius);
-        float randomZ = Random.Range(-walkPointRadius, walkPointRadius);
-
-        walkArea = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-
-        if (Physics.Raycast(walkArea, -transform.up, 2f, WhatIsGround))
-            walkPointState = true;
+        walkArea = hit.position; // Set the valid position
+        walkPointState = true;
     }
+}
 
     private void SearchingPlayer()
     {
