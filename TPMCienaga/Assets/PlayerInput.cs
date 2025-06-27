@@ -231,7 +231,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""77707561-4117-4847-b9b8-b7654ee683dc"",
-                    ""path"": ""<Keyboard>/z"",
+                    ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
