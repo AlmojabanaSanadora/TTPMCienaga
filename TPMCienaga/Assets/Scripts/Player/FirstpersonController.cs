@@ -40,6 +40,14 @@ public class FirstpersonController : MonoBehaviour
     public float fovLerpSpeed = 5f;
     public float crouchSensitivityMultiplier = 0.5f;
 
+    [Header("Audio")]
+    public AudioSource footstepSource;
+    public AudioClip[] defaultSteps;
+    public AudioClip[] woodSteps;
+    public AudioClip[] dirtSteps;
+    public AudioClip[] waterSteps;
+    public float stepInterval = 0.5f;
+
     private float currentStamina;
     private bool canSprint => currentStamina > 0f;
 
@@ -59,6 +67,8 @@ public class FirstpersonController : MonoBehaviour
 
     private float originalSensitivity;
     private float targetFOV;
+
+    private float stepTimer;
 
     // Niebla para modo agachado
     private Color originalFogColor;
@@ -96,11 +106,9 @@ public class FirstpersonController : MonoBehaviour
         if (staminaWarningText != null)
             staminaWarningText.SetActive(false);
 
-        // Niebla original
         originalFogColor = RenderSettings.fogColor;
         originalFogDensity = RenderSettings.fogDensity;
 
-        // Sensibilidad y FOV
         originalSensitivity = sensitivity;
         targetFOV = defaultFOV;
 
@@ -117,6 +125,7 @@ public class FirstpersonController : MonoBehaviour
         Movement();
         Look();
         HeadBob();
+        HandleFootsteps();
         UpdateStaminaBar();
         UpdateWarningText();
 
@@ -262,7 +271,6 @@ public class FirstpersonController : MonoBehaviour
         cameraPos.y = isCrouching ? crouchHeight / 2f : _initialCameraLocalPos.y;
         cameraTransform.localPosition = cameraPos;
 
-        // Visuales al agacharse
         if (isCrouching)
         {
             RenderSettings.fogColor = crouchFogColor;
@@ -279,5 +287,62 @@ public class FirstpersonController : MonoBehaviour
             sensitivity = originalSensitivity;
             targetFOV = defaultFOV;
         }
+    }
+
+    private void HandleFootsteps()
+    {
+        if (_characaterController.isGrounded && _movement.magnitude > 0.1f)
+        {
+            stepTimer -= Time.deltaTime;
+            if (stepTimer <= 0f)
+            {
+                PlayFootstep();
+                float speedFactor = _isSprinting ? 0.5f : 1f;
+                stepTimer = stepInterval * speedFactor;
+            }
+        }
+        else
+        {
+            stepTimer = 0f;
+        }
+    }
+
+    private void PlayFootstep()
+    {
+        if (footstepSource == null) return;
+
+        SurfaceType surface = GetCurrentSurface();
+        AudioClip[] clips = defaultSteps;
+
+        switch (surface)
+        {
+            case SurfaceType.Wood:
+                clips = woodSteps;
+                break;
+            case SurfaceType.Dirt:
+                clips = dirtSteps;
+                break;
+            case SurfaceType.Water:
+                clips = waterSteps;
+                break;
+        }
+
+        if (clips != null && clips.Length > 0)
+        {
+            AudioClip clip = clips[Random.Range(0, clips.Length)];
+            footstepSource.PlayOneShot(clip);
+        }
+    }
+
+    private SurfaceType GetCurrentSurface()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 2f))
+        {
+            SurfaceIdentifier surface = hit.collider.GetComponent<SurfaceIdentifier>();
+            if (surface != null)
+                return surface.surfaceType;
+        }
+
+        return SurfaceType.Default;
     }
 }
