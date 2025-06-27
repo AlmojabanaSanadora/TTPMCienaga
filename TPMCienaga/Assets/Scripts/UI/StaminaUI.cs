@@ -1,16 +1,24 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StaminaUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public StaminaSystem staminaSystem;
+    public Image staminaBar;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (staminaSystem != null && staminaBar != null)
+        {
+            float percent = staminaSystem.CurrentStamina / staminaSystem.maxStamina;
+            staminaBar.fillAmount = percent;
+
+            if (percent > 0.7f)
+                staminaBar.color = Color.green;
+            else if (percent > 0.3f)
+                staminaBar.color = Color.yellow;
+            else
+                staminaBar.color = Color.red;
+        }
     }
 }

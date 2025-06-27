@@ -2,15 +2,47 @@ using UnityEngine;
 
 public class CrouchHandler : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public CharacterController controller;
+    public float crouchHeight = 1f;
+    public float standHeight = 2f;
+    public Camera playerCamera;
+    public float crouchFOV = 45f;
+    public float defaultFOV = 60f;
+
+    public bool IsCrouching { get; private set; }
+
+    private float originalCameraY;
+    private Color originalFogColor;
+    private float originalFogDensity;
+
+    private void Start()
     {
-        
+        originalCameraY = playerCamera.transform.localPosition.y;
+        originalFogColor = RenderSettings.fogColor;
+        originalFogDensity = RenderSettings.fogDensity;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ToggleCrouch()
     {
-        
+        IsCrouching = !IsCrouching;
+
+        controller.height = IsCrouching ? crouchHeight : standHeight;
+
+        Vector3 camPos = playerCamera.transform.localPosition;
+        camPos.y = IsCrouching ? crouchHeight / 2f : originalCameraY;
+        playerCamera.transform.localPosition = camPos;
+
+        if (IsCrouching)
+        {
+            RenderSettings.fogColor = new Color(0.05f, 0.05f, 0.05f);
+            RenderSettings.fogDensity = 0.35f;
+            playerCamera.fieldOfView = crouchFOV;
+        }
+        else
+        {
+            RenderSettings.fogColor = originalFogColor;
+            RenderSettings.fogDensity = originalFogDensity;
+            playerCamera.fieldOfView = defaultFOV;
+        }
     }
 }
