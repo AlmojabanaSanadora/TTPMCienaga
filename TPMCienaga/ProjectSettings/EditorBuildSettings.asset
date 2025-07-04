@@ -9,5 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Cienaga.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 26b11c404b53d654aac8afb6c95ccb59, type: 2}
+    com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: 8d0c3d38acca3c24987cd1efe0546d27, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
