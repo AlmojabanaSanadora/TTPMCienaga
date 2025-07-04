@@ -57,7 +57,7 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _cantidad: 3.37
+    - _cantidad: 4.85
     - _speed: 0.2
     m_Colors:
     - _Color: {r: 179.99025, g: 17.829224, b: 36.99477, a: 0}
