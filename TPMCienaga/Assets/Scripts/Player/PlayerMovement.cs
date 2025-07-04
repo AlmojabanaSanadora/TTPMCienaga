@@ -3,7 +3,7 @@
 public class PlayerMovement : MonoBehaviour
 {
     public float movementSpeed = 4f;
-    public float sprintMultiplier = 3.5f;
+    public float sprintMultiplier = 2f;
     public float gravity = -9.8f;
 
     public CharacterController controller;
@@ -18,41 +18,52 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        staminaSystem.HandleStamina(
-            inputManager.Sprinting &&
-            inputManager.MoveInput.magnitude > 0.1f &&
-            !crouchHandler.IsCrouching
-        );
+        // Manejo de estamina
+        bool isRunning = inputManager.Sprinting && inputManager.MoveInput.magnitude > 0.1f && !crouchHandler.IsCrouching;
+        staminaSystem.HandleStamina(isRunning);
 
+        // Agacharse
         if (inputManager.CrouchingPressed)
             crouchHandler.ToggleCrouch();
 
+        // Obtener dirección de movimiento horizontal según cámara
         Vector2 moveInput = inputManager.MoveInput;
-        Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
 
+        Vector3 camForward = cameraController.cameraTransform.forward;
+        camForward.y = 0f;
+        camForward.Normalize();
+
+        Vector3 camRight = cameraController.cameraTransform.right;
+        camRight.y = 0f;
+        camRight.Normalize();
+
+        Vector3 moveDirection = camRight * moveInput.x + camForward * moveInput.y;
+
+        // Calcular velocidad
         float currentSpeed = movementSpeed;
         if (inputManager.Sprinting && staminaSystem.CanSprint && !crouchHandler.IsCrouching)
             currentSpeed *= sprintMultiplier;
         else if (crouchHandler.IsCrouching)
             currentSpeed = movementSpeed / 2f;
 
-        controller.Move(move * currentSpeed * Time.deltaTime);
+        // Aplicar movimiento horizontal
+        controller.Move(moveDirection * currentSpeed * Time.deltaTime);
 
+        // Aplicar gravedad
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
+        // Rotar cámara con input
         cameraController.HandleLook(inputManager.LookInput);
 
-        footstepAudio.HandleFootsteps(
-            moveInput.magnitude > 0.1f,
-            controller.isGrounded,
-            transform.position
-        );
+        // Reproducir pasos
+        footstepAudio.HandleFootsteps(moveInput.magnitude > 0.1f, controller.isGrounded, transform.position);
 
-        headBob.HandleHeadBob(
-            moveInput,
-            controller.isGrounded,
-            inputManager.Sprinting
-        );
+        // HeadBob visual
+        bool isMoving = moveInput.magnitude > 0.1f;
+        bool isGrounded = controller.isGrounded;
+        bool isSprinting = inputManager.Sprinting && isMoving && !crouchHandler.IsCrouching;
+
+        headBob.HandleHeadBob(moveInput, isGrounded, isSprinting);
     }
 }

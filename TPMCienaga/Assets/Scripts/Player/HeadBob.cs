@@ -14,15 +14,14 @@ public class HeadBob : MonoBehaviour
 
     private Vector3 currentBobOffset;
     private Vector3 bobVelocity;
-    private Quaternion currentTilt;
-    private Quaternion tiltVelocity;
+    private float currentTiltZ;
+    private float tiltVelocity;
 
     private void Start()
     {
         if (cameraTransform != null)
             initialPos = cameraTransform.localPosition;
 
-        // Inicia en una fase aleatoria para evitar brincos duros
         bobTimer = Random.Range(0f, Mathf.PI * 2f);
     }
 
@@ -36,9 +35,8 @@ public class HeadBob : MonoBehaviour
             currentBobOffset = Vector3.SmoothDamp(currentBobOffset, Vector3.zero, ref bobVelocity, 0.1f);
             cameraTransform.localPosition = initialPos + currentBobOffset;
 
-            currentTilt = Quaternion.Slerp(currentTilt, Quaternion.identity, Time.deltaTime * smoothSpeed);
-            cameraTransform.localRotation = currentTilt;
-
+            currentTiltZ = Mathf.SmoothDamp(currentTiltZ, 0f, ref tiltVelocity, 0.1f);
+            ApplyTilt(currentTiltZ);
             return;
         }
 
@@ -53,8 +51,14 @@ public class HeadBob : MonoBehaviour
         currentBobOffset = Vector3.SmoothDamp(currentBobOffset, targetOffset, ref bobVelocity, 0.05f);
         cameraTransform.localPosition = initialPos + currentBobOffset;
 
-        Quaternion targetTilt = Quaternion.Euler(0f, 0f, tiltZ);
-        currentTilt = Quaternion.Slerp(currentTilt, targetTilt, Time.deltaTime * smoothSpeed);
-        cameraTransform.localRotation = currentTilt;
+        currentTiltZ = Mathf.SmoothDamp(currentTiltZ, tiltZ, ref tiltVelocity, 0.05f);
+        ApplyTilt(currentTiltZ);
+    }
+
+    private void ApplyTilt(float tiltZ)
+    {
+        Vector3 angles = cameraTransform.localEulerAngles;
+        angles.z = tiltZ;
+        cameraTransform.localEulerAngles = angles;
     }
 }

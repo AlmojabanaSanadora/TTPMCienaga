@@ -2,6 +2,6 @@ public enum SurfaceType
 {
     Default,
     Wood,
-    Dirt,
+    Ground,
     Water
 }

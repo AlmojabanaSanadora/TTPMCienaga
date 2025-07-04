@@ -10,6 +10,21 @@ public class PlayerInventory : MonoBehaviour
 
     private bool isInventoryOpen = false;
 
+    private void Start()
+    {
+        // Asegura que el cursor esté oculto y bloqueado al inicio del juego
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            ToggleInventory();
+        }
+    }
+
     public bool CanPickupHolyWater() => !hasHolyWater;
     public bool CanPickupCrucifix() => !hasCrucifix;
 
@@ -38,14 +53,6 @@ public class PlayerInventory : MonoBehaviour
         uiManager.ClearInventoryUI();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            ToggleInventory();
-        }
-    }
-
     private void ToggleInventory()
     {
         isInventoryOpen = !isInventoryOpen;
@@ -54,9 +61,11 @@ public class PlayerInventory : MonoBehaviour
             inventoryPanel.SetActive(isInventoryOpen);
 
         Time.timeScale = isInventoryOpen ? 0f : 1f;
+
         Cursor.lockState = isInventoryOpen ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = isInventoryOpen;
     }
 
     public bool IsInventoryOpen() => isInventoryOpen;
 }
+
