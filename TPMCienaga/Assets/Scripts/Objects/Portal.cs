@@ -1,12 +1,12 @@
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
+using TMPro;
 
 public class Portal : MonoBehaviour
 {
     public DemonAI demon;
     public PlayerInventory playerInventory;
     public GameObject interactPromptUI;
-    public Text warningTextUI;
+    public TMP_Text warningTextUI;
 
     private bool playerInRange = false;
     private bool destroyed = false;
@@ -40,6 +40,9 @@ public class Portal : MonoBehaviour
 
             if (interactPromptUI != null)
                 interactPromptUI.SetActive(true);
+
+            if (warningTextUI != null)
+                warningTextUI.text = "Presiona B para destruir el portal.";
         }
     }
 
@@ -60,8 +63,12 @@ public class Portal : MonoBehaviour
     private void DestroyPortal()
     {
         destroyed = true;
+
         if (warningTextUI != null)
             warningTextUI.text = "";
+
+        if (interactPromptUI != null)
+            interactPromptUI.SetActive(false);
 
         demon.IncreaseAggression();
         Destroy(gameObject);
@@ -75,7 +82,7 @@ public class Portal : MonoBehaviour
         bool hasCrucifix = playerInventory.hasCrucifix;
 
         if (!hasWater && !hasCrucifix)
-            warningTextUI.text = "Falta agua bendita y crucifijo.";
+            warningTextUI.text = "Faltan agua bendita y crucifijo.";
         else if (!hasWater)
             warningTextUI.text = "Falta agua bendita.";
         else if (!hasCrucifix)
