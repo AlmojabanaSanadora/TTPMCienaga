@@ -130789,7 +130789,7 @@ MonoBehaviour:
   crouchHeight: 1
   standHeight: 2
   playerCamera: {fileID: 2104533681}
-  crouchFOV: 45
+  crouchFOV: 65
   defaultFOV: 60
 --- !u!114 &1633019931
 MonoBehaviour:

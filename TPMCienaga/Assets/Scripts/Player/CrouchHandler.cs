@@ -3,10 +3,10 @@ using UnityEngine;
 public class CrouchHandler : MonoBehaviour
 {
     public CharacterController controller;
-    public float crouchHeight = 1f;
+    public float crouchHeight = 1.2f;         
     public float standHeight = 2f;
     public Camera playerCamera;
-    public float crouchFOV = 45f;
+    public float crouchFOV = 65f;             
     public float defaultFOV = 60f;
 
     public bool IsCrouching { get; private set; }
@@ -29,7 +29,7 @@ public class CrouchHandler : MonoBehaviour
         controller.height = IsCrouching ? crouchHeight : standHeight;
 
         Vector3 camPos = playerCamera.transform.localPosition;
-        camPos.y = IsCrouching ? crouchHeight / 2f : originalCameraY;
+        camPos.y = IsCrouching ? originalCameraY - 0.3f : originalCameraY; 
         playerCamera.transform.localPosition = camPos;
 
         if (IsCrouching)
