@@ -69242,7 +69242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 2104533678}
-  sensitivity: 1.5
+  sensitivity: 0.3
   minY: -80
   maxY: 80
 --- !u!1001 &976927436
