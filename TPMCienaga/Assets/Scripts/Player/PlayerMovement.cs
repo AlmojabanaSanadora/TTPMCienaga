@@ -56,8 +56,6 @@ public class PlayerMovement : MonoBehaviour
         // Rotar cámara con input
         cameraController.HandleLook(inputManager.LookInput);
 
-        // Reproducir pasos
-        footstepAudio.HandleFootsteps(moveInput.magnitude > 0.1f, controller.isGrounded, transform.position);
 
         // HeadBob visual
         bool isMoving = moveInput.magnitude > 0.1f;
