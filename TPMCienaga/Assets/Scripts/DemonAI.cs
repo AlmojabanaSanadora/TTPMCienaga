@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 public class DemonAI : MonoBehaviour
 {
+    private Animator animator;
     private NavMeshAgent agent;
     public Transform player;
     public LayerMask WhatIsGround, WhatIsPlayer;
@@ -21,6 +22,8 @@ public class DemonAI : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+
         UpdateAggression(); // Inicializar con nivel 0
     }
 
@@ -36,6 +39,7 @@ public class DemonAI : MonoBehaviour
         {
             Patrol();
         }
+        UpdateAnimation();
     }
 
     private void Patrol()
@@ -88,6 +92,12 @@ public class DemonAI : MonoBehaviour
     {
         agent.speed = speedByLevel[aggressionLevel];
         Debug.Log($"Nivel de agresividad del demonio: {aggressionLevel + 1}. Velocidad: {agent.speed}");
+    }
+
+    private void UpdateAnimation()
+    {
+        bool isMoving = agent.velocity.magnitude > 0.1f;
+        animator.SetBool("isWalking", isMoving);
     }
 
     private void OnDrawGizmos()
