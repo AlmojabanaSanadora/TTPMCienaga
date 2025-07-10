@@ -12,6 +12,13 @@ public class PlayerCameraController : MonoBehaviour
 
     private float rotationY;
 
+    public void ResetVerticalRotation()
+    {
+        rotationY = 0f;
+        cameraTransform.localRotation = Quaternion.Euler(rotationY, 0f, 0f);
+    }
+
+
     public void HandleLook(Vector2 lookInput)
     {
         Vector2 mouseDelta = lookInput * sensitivity;
