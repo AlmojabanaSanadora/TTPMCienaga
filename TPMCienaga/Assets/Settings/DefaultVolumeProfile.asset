@@ -18,7 +18,7 @@ MonoBehaviour:
     m_Value: {x: 0.94234896, y: 1, z: 0.9859516, w: 0}
   gamma:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 0.98589927, y: 0.98793447, z: 1, w: 0}
   gain:
     m_OverrideState: 1
     m_Value: {x: 1, y: 1, z: 1, w: 0}
@@ -106,7 +106,7 @@ MonoBehaviour:
     m_Value: 0.5
   clamp:
     m_OverrideState: 1
-    m_Value: 0.01
+    m_Value: 0.02
 --- !u!114 &-7274224791359825572
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -164,7 +164,7 @@ MonoBehaviour:
     m_Value: 0
   contrast:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 25
   colorFilter:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -192,10 +192,10 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.671
+    m_Value: 0.85
   response:
     m_OverrideState: 1
-    m_Value: 0.472
+    m_Value: 0.397
   texture:
     m_OverrideState: 1
     m_Value: {fileID: 0}
@@ -369,13 +369,13 @@ MonoBehaviour:
     m_Value: 50
   scatter:
     m_OverrideState: 1
-    m_Value: 0.163
+    m_Value: 0.214
   clamp:
     m_OverrideState: 1
-    m_Value: 1000
+    m_Value: 2000
   tint:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.6190028, b: 0, a: 1}
+    m_Value: {r: 1, g: 0.4872412, b: 0, a: 1}
   highQualityFiltering:
     m_OverrideState: 1
     m_Value: 1
@@ -481,7 +481,7 @@ MonoBehaviour:
   active: 1
   distance:
     m_OverrideState: 1
-    m_Value: 117
+    m_Value: 100
   baseHeight:
     m_OverrideState: 1
     m_Value: 0
@@ -650,7 +650,7 @@ MonoBehaviour:
   master:
     m_OverrideState: 1
     m_Value:
-      <length>k__BackingField: 3
+      <length>k__BackingField: 2
       m_Loop: 0
       m_ZeroValue: 0
       m_Range: 1
@@ -661,15 +661,6 @@ MonoBehaviour:
           time: 0
           value: 0
           inSlope: 0
-          outSlope: 1
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 0.3004695
-          value: 0.27184469
-          inSlope: 1
           outSlope: 1
           tangentMode: 0
           weightedMode: 0
@@ -1034,7 +1025,7 @@ MonoBehaviour:
     m_Value: 0.466
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.154
+    m_Value: 0.46
   rounded:
     m_OverrideState: 1
     m_Value: 1
