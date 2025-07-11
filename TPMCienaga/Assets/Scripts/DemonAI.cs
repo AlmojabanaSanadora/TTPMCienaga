@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,6 +20,11 @@ public class DemonAI : MonoBehaviour
     private PlayerHidingHandler hidingHandler;
     private bool isRedirecting = false;
 
+    public GameObject ScreamerUI;
+    public Camera mainCamera;
+    private float playerSightTimer = 0f;
+    private bool screamerTriggered = false;
+
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
@@ -26,10 +32,12 @@ public class DemonAI : MonoBehaviour
         animator = GetComponent<Animator>();
         hidingHandler = player?.GetComponent<PlayerHidingHandler>();
 
+        ScreamerUI.SetActive(false);
+
         UpdateAggression();
     }
 
-    private void Update()
+        private void Update()
     {
         if (player == null || hidingHandler == null) return;
 
@@ -48,11 +56,34 @@ public class DemonAI : MonoBehaviour
         playerInSightRadius = Physics.CheckSphere(transform.position, sightRadius, WhatIsPlayer);
 
         if (playerInSightRadius)
+        {
             SearchingPlayer();
+            playerSightTimer += Time.deltaTime;
+
+            if (!screamerTriggered && playerSightTimer >= 3f)
+            {
+                TriggerScreamer();
+                TeleportAwayFromPlayer(10f, 30f); 
+            }
+        }
         else
+        {
+            playerSightTimer = 0f;
+            ScreamerUI.SetActive(false);
+            screamerTriggered = false;
             Patrol();
+        }
 
         UpdateAnimation();
+    }
+
+    private void TriggerScreamer()
+    {
+        screamerTriggered = true;
+
+        StartCoroutine(CameraShake());
+
+        StartCoroutine(FlashScreamerUI());
     }
 
     private void Patrol()
@@ -87,7 +118,7 @@ public class DemonAI : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(new(directionToPlayer.x, 0, directionToPlayer.z));
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * agent.angularSpeed);
 
-        agent.SetDestination(player.position);
+        agent.SetDestination(transform.position);
     }
 
     private void GoToNearestPortal()
@@ -146,5 +177,61 @@ public class DemonAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, walkPointRadius);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, 2f);
+    }
+    
+    private void TeleportAwayFromPlayer(float minDistance, float maxDistance)
+    {
+        Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
+        randomDirection += player.position;
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomDirection, out hit, maxDistance, NavMesh.AllAreas))
+        {
+            float distanceToPlayer = Vector3.Distance(hit.position, player.position);
+            if (distanceToPlayer >= minDistance && distanceToPlayer <= maxDistance)
+            {
+                transform.position = hit.position; // Teleport the enemy
+                agent.ResetPath(); // Clear the NavMeshAgent path
+            }
+            else
+            {
+                TeleportAwayFromPlayer(minDistance, maxDistance); // Retry if the position is invalid
+            }
+        }
+    }
+    
+        private IEnumerator CameraShake()
+    {
+        float shakeDuration = 1f;
+        float shakeMagnitude = 0.2f;
+        Vector3 originalPosition = mainCamera.transform.localPosition;
+
+        float elapsed = 0f;
+        while (elapsed < shakeDuration)
+        {
+            float x = Random.Range(-shakeMagnitude, shakeMagnitude);
+            float y = Random.Range(-shakeMagnitude, shakeMagnitude);
+
+            mainCamera.transform.localPosition = originalPosition + new Vector3(x, y, 0);
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        mainCamera.transform.localPosition = originalPosition;
+    }
+
+    private IEnumerator FlashScreamerUI()
+    {
+        int flashCount = 9;
+        float flashInterval = 0.1f; 
+
+        for (int i = 0; i < flashCount; i++)
+        {
+            ScreamerUI.SetActive(!ScreamerUI.activeSelf); 
+            yield return new WaitForSeconds(flashInterval);
+        }
+
+        ScreamerUI.SetActive(true); 
     }
 }
