@@ -22,6 +22,8 @@ public class DemonAI : MonoBehaviour
 
     public GameObject ScreamerUI;
     public Camera mainCamera;
+    public AudioSource enemySound;
+    public AudioSource screamerSound;
     private float playerSightTimer = 0f;
     private bool screamerTriggered = false;
 
@@ -37,7 +39,12 @@ public class DemonAI : MonoBehaviour
         UpdateAggression();
     }
 
-        private void Update()
+    private void Start()
+    {
+        StartCoroutine(PlayEnemySound());
+    }
+
+    private void Update()
     {
         if (player == null || hidingHandler == null) return;
 
@@ -63,7 +70,7 @@ public class DemonAI : MonoBehaviour
             if (!screamerTriggered && playerSightTimer >= 3f)
             {
                 TriggerScreamer();
-                TeleportAwayFromPlayer(10f, 30f); 
+                TeleportAwayFromPlayer(10f, 30f);
             }
         }
         else
@@ -80,10 +87,16 @@ public class DemonAI : MonoBehaviour
     private void TriggerScreamer()
     {
         screamerTriggered = true;
+        enemySound.Stop();
+        screamerSound.Play();
+
 
         StartCoroutine(CameraShake());
 
         StartCoroutine(FlashScreamerUI());
+
+        StartCoroutine(ResumeSoundsAfterScreamer(1.5f + 0.9f)); 
+
     }
 
     private void Patrol()
@@ -178,9 +191,20 @@ public class DemonAI : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, 2f);
     }
-    
+
+    private IEnumerator ResumeSoundsAfterScreamer(float delay)
+    {
+        yield return new WaitForSeconds(delay); 
+
+        if (!playerInSightRadius && !walkPointState) yield break; 
+
+        enemySound.Play();
+    }
+
     private void TeleportAwayFromPlayer(float minDistance, float maxDistance)
     {
+        ScreamerUI.SetActive(false);
+
         Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
         randomDirection += player.position;
 
@@ -190,17 +214,17 @@ public class DemonAI : MonoBehaviour
             float distanceToPlayer = Vector3.Distance(hit.position, player.position);
             if (distanceToPlayer >= minDistance && distanceToPlayer <= maxDistance)
             {
-                transform.position = hit.position; // Teleport the enemy
-                agent.ResetPath(); // Clear the NavMeshAgent path
+                transform.position = hit.position;
+                agent.ResetPath();
             }
             else
             {
-                TeleportAwayFromPlayer(minDistance, maxDistance); // Retry if the position is invalid
+                TeleportAwayFromPlayer(minDistance, maxDistance);
             }
         }
     }
-    
-        private IEnumerator CameraShake()
+
+    private IEnumerator CameraShake()
     {
         float shakeDuration = 1f;
         float shakeMagnitude = 0.2f;
@@ -224,14 +248,28 @@ public class DemonAI : MonoBehaviour
     private IEnumerator FlashScreamerUI()
     {
         int flashCount = 9;
-        float flashInterval = 0.1f; 
+        float flashInterval = 0.1f;
 
         for (int i = 0; i < flashCount; i++)
         {
-            ScreamerUI.SetActive(!ScreamerUI.activeSelf); 
+            ScreamerUI.SetActive(!ScreamerUI.activeSelf);
             yield return new WaitForSeconds(flashInterval);
         }
 
-        ScreamerUI.SetActive(true); 
+        ScreamerUI.SetActive(true);
+    }
+    
+    private IEnumerator PlayEnemySound()
+    {
+        while (true)
+        {
+            if (playerInSightRadius || walkPointState) 
+            {
+                enemySound.Play();
+            }
+
+            float cooldown = Random.Range(2f, 5f); 
+            yield return new WaitForSeconds(cooldown);
+        }
     }
 }
