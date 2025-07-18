@@ -24,6 +24,7 @@ public class DemonAI : MonoBehaviour
     public AudioSource screamerSound;
     private float playerSightTimer = 0f;
     private bool screamerTriggered = false;
+    private float damage = 34f; 
 
     private void Awake()
     {
@@ -38,6 +39,30 @@ public class DemonAI : MonoBehaviour
     private void Start()
     {
         StartCoroutine(PlayEnemySound());
+    }
+
+    private float GetAggressionRange()
+    {
+        float[] rangeByLevel = { 160f, 120f, 80f, 50f, 35f };
+        return rangeByLevel[aggressionLevel];
+    }
+
+    private void StayNearPlayer()
+    {
+        float aggressionRange = GetAggressionRange();
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if (distanceToPlayer > aggressionRange)
+        {
+            Vector3 directionToPlayer = (player.position - transform.position).normalized;
+            Vector3 targetPosition = player.position - directionToPlayer * aggressionRange;
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(targetPosition, out hit, 2f, NavMesh.AllAreas))
+            {
+                agent.SetDestination(hit.position);
+            }
+        }
     }
 
     private void Update()
@@ -66,7 +91,7 @@ public class DemonAI : MonoBehaviour
             if (!screamerTriggered && playerSightTimer >= 3f)
             {
                 TriggerScreamer();
-                TeleportAwayFromPlayer(10f, 30f);
+                TeleportAwayFromPlayer(30f, 70f);
             }
         }
         else
@@ -77,6 +102,7 @@ public class DemonAI : MonoBehaviour
             Patrol();
         }
 
+        StayNearPlayer();
         UpdateAnimation();
     }
 
@@ -92,7 +118,13 @@ public class DemonAI : MonoBehaviour
 
         StartCoroutine(FlashScreamerUI());
 
-        StartCoroutine(ResumeSoundsAfterScreamer(1.5f + 0.9f)); 
+        StartCoroutine(ResumeSoundsAfterScreamer(1.5f + 0.9f));
+
+        PlayerHealth playerHealth = player.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damage); 
+            }
 
     }
 
@@ -179,21 +211,11 @@ public class DemonAI : MonoBehaviour
         animator.SetBool("isWalking", isMoving);
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, sightRadius);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, walkPointRadius);
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, 2f);
-    }
-
     private IEnumerator ResumeSoundsAfterScreamer(float delay)
     {
-        yield return new WaitForSeconds(delay); 
+        yield return new WaitForSeconds(delay);
 
-        if (!playerInSightRadius && !walkPointState) yield break; 
+        if (!playerInSightRadius && !walkPointState) yield break;
 
         enemySound.Play();
     }
@@ -255,18 +277,34 @@ public class DemonAI : MonoBehaviour
 
         ScreamerUI.SetActive(true);
     }
-    
+
     private IEnumerator PlayEnemySound()
     {
         while (true)
         {
-            if (playerInSightRadius || walkPointState) 
+            if (playerInSightRadius || walkPointState)
             {
                 enemySound.Play();
             }
 
-            float cooldown = Random.Range(2f, 5f); 
+            float cooldown = Random.Range(2f, 5f);
             yield return new WaitForSeconds(cooldown);
+        }
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, sightRadius);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, walkPointRadius);
+        Gizmos.color = Color.green;
+
+        if (player != null)
+        {
+            Gizmos.color = Color.yellow;
+            float aggressionRange = GetAggressionRange();
+            Gizmos.DrawWireSphere(player.position, aggressionRange); 
         }
     }
 }
