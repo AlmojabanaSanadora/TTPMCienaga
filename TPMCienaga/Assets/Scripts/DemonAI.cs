@@ -16,8 +16,6 @@ public class DemonAI : MonoBehaviour
 
     public float[] speedByLevel = { 3.5f, 4.5f, 5.5f, 6.5f, 8f }; // Velocidad por nivel de agresividad
     private int aggressionLevel = 0;
-
-    private PlayerHidingHandler hidingHandler;
     private bool isRedirecting = false;
 
     public GameObject ScreamerUI;
@@ -32,10 +30,8 @@ public class DemonAI : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        hidingHandler = player?.GetComponent<PlayerHidingHandler>();
 
         ScreamerUI.SetActive(false);
-
         UpdateAggression();
     }
 
@@ -46,9 +42,9 @@ public class DemonAI : MonoBehaviour
 
     private void Update()
     {
-        if (player == null || hidingHandler == null) return;
+        if (player == null) return;
 
-        if (hidingHandler.IsHiding())
+        if (GameState.PlayerIsHiding)
         {
             if (!isRedirecting)
             {
@@ -83,6 +79,7 @@ public class DemonAI : MonoBehaviour
 
         UpdateAnimation();
     }
+
 
     private void TriggerScreamer()
     {
