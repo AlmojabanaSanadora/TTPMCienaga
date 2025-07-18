@@ -43,8 +43,8 @@ public class ClosetHidingZone : MonoBehaviour
         if (lookDir != Vector3.zero)
             player.transform.rotation = Quaternion.LookRotation(lookDir);
 
-        // Desactiva solo el movimiento
-        SetPlayerComponents(enableMovement: false);
+        // Desactiva solo movimiento, NO la cámara
+        SetPlayerComponents(enableMovement: false, enableCamera: true);
 
         if (cameraRotationWhileHidden != null)
             cameraRotationWhileHidden.enabled = true;
@@ -63,7 +63,7 @@ public class ClosetHidingZone : MonoBehaviour
         player.transform.position = unhidePosition.position;
         player.transform.rotation = Quaternion.Euler(0f, unhidePosition.eulerAngles.y, 0f);
 
-        SetPlayerComponents(enableMovement: true);
+        SetPlayerComponents(enableMovement: true, enableCamera: true);
 
         if (cameraRotationWhileHidden != null)
             cameraRotationWhileHidden.enabled = false;
@@ -75,7 +75,7 @@ public class ClosetHidingZone : MonoBehaviour
         if (cc != null) cc.enabled = true;
     }
 
-    private void SetPlayerComponents(bool enableMovement)
+    private void SetPlayerComponents(bool enableMovement, bool enableCamera)
     {
         var inputManager = player.GetComponent<PlayerInputManager>();
         if (inputManager != null) inputManager.enabled = enableMovement;
@@ -83,9 +83,8 @@ public class ClosetHidingZone : MonoBehaviour
         var movement = player.GetComponent<PlayerMovement>();
         if (movement != null) movement.enabled = enableMovement;
 
-        // Siempre dejar cámara activa
         var cameraController = player.GetComponent<PlayerCameraController>();
-        if (cameraController != null) cameraController.enabled = true;
+        if (cameraController != null) cameraController.enabled = enableCamera;
 
         var footsteps = player.GetComponent<FootstepAudio>();
         if (footsteps != null) footsteps.enabled = enableMovement;

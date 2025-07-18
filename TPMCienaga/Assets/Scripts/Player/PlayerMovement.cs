@@ -14,20 +14,16 @@ public class PlayerMovement : MonoBehaviour
     public CrouchHandler crouchHandler;
     public HeadBob headBob;
 
-    public bool canMove = true; // ✅ Permite habilitar/deshabilitar movimiento
-
     private Vector3 velocity;
+
+    public bool canMove = true; // Nueva variable para controlar el movimiento
 
     private void Update()
     {
-        // Permitir mirar siempre con la cámara
-        cameraController.HandleLook(inputManager.LookInput);
+        
 
         if (!canMove)
-        {
-            // Si no se puede mover, salir sin mover al personaje pero permitir cámara
             return;
-        }
 
         // Manejo de estamina
         bool isRunning = inputManager.Sprinting && inputManager.MoveInput.magnitude > 0.1f && !crouchHandler.IsCrouching;
