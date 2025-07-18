@@ -6,7 +6,13 @@ public class NotesUI : MonoBehaviour
     public GameObject pickupPromptUI;
     public GameObject noteUI; 
     public TextMeshProUGUI noteUIText; 
+    public TextMeshProUGUI noteUIText2;
+    public TextMeshProUGUI noteUITitle1;
+    public TextMeshProUGUI noteUITitle2;
     public string noteText;
+    public string noteText2;
+    public string noteTitle1;
+    public string noteTitle2;
     public float noteDistance = 2f; 
     public float noteHeight = 1f; 
     public GameObject lantern; 
@@ -16,13 +22,12 @@ public class NotesUI : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.X)) 
+        if (playerInRange && Input.GetKeyDown(KeyCode.X))
         {
             PickUpNote();
         }
 
-        // Allow closing the note by pressing 'G'
-        if (noteUI.activeSelf && Input.GetKeyDown(KeyCode.G)) 
+        if (noteUI.activeSelf && Input.GetKeyDown(KeyCode.G))
         {
             HideNote();
         }
@@ -38,6 +43,9 @@ public class NotesUI : MonoBehaviour
 
         noteUI.SetActive(true);
         noteUIText.text = noteText;
+        noteUIText2.text = noteText2;
+        noteUITitle1.text = noteTitle1;
+        noteUITitle2.text = noteTitle2;
 
         if (pickupPromptUI != null)
             pickupPromptUI.SetActive(false);
@@ -51,12 +59,10 @@ public class NotesUI : MonoBehaviour
     public void HideNote()
     {
         noteUI.SetActive(false);
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
 
-        if (lantern != null)
-            lantern.SetActive(true);
-
-        Destroy(gameObject);
+        Debug.Log($"Destroying note: {this.gameObject.name}");
+            Destroy(this.gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
