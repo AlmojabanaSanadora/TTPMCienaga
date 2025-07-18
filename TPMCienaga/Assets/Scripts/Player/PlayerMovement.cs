@@ -10,18 +10,15 @@ public class PlayerMovement : MonoBehaviour
     public PlayerInputManager inputManager;
     public PlayerCameraController cameraController;
     public StaminaSystem staminaSystem;
-    public FootstepAudio footstepAudio;
     public CrouchHandler crouchHandler;
     public HeadBob headBob;
 
     private Vector3 velocity;
 
-    public bool canMove = true; // Nueva variable para controlar el movimiento
+    public bool canMove = true;
 
     private void Update()
     {
-        
-
         if (!canMove)
             return;
 
@@ -67,4 +64,6 @@ public class PlayerMovement : MonoBehaviour
 
         headBob.HandleHeadBob(moveInput, isGrounded, isSprinting);
     }
+
+
 }

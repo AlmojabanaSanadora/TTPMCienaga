@@ -86,8 +86,7 @@ public class ClosetHidingZone : MonoBehaviour
         var cameraController = player.GetComponent<PlayerCameraController>();
         if (cameraController != null) cameraController.enabled = enableCamera;
 
-        var footsteps = player.GetComponent<FootstepAudio>();
-        if (footsteps != null) footsteps.enabled = enableMovement;
+        
     }
 
     private void OnTriggerEnter(Collider other)
