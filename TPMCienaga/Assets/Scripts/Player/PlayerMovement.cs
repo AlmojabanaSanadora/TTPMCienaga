@@ -13,7 +13,11 @@ public class PlayerMovement : MonoBehaviour
     public CrouchHandler crouchHandler;
     public HeadBob headBob;
 
+    public AudioSource footstepSource; // ← AudioSource en el Player
+    public AudioClip footstepClip;     // ← Audio de pasos
+
     private Vector3 velocity;
+    private bool isFootstepPlaying = false;
 
     public bool canMove = true;
 
@@ -63,6 +67,61 @@ public class PlayerMovement : MonoBehaviour
         bool isSprinting = inputManager.Sprinting && isMoving && !crouchHandler.IsCrouching;
 
         headBob.HandleHeadBob(moveInput, isGrounded, isSprinting);
+
+        // Footstep sound
+        HandleFootstepSound(isMoving, isGrounded);
+    }
+
+    private void HandleFootstepSound(bool isMoving, bool isGrounded)
+    {
+        if (isMoving && isGrounded && !isFootstepPlaying)
+        {
+            footstepSource.clip = footstepClip;
+            footstepSource.loop = true;
+            footstepSource.Play();
+            isFootstepPlaying = true;
+        }
+        else if ((!isMoving || !isGrounded) && isFootstepPlaying)
+        {
+            footstepSource.Stop();
+            isFootstepPlaying = false;
+        }
+    }
+
+    private AudioClip originalFootstepClip;
+
+
+    private void Start()
+    {
+        originalFootstepClip = footstepClip;
+    }
+
+    public void SetTemporaryFootstep(AudioClip newClip)
+    {
+        if (footstepClip != newClip)
+        {
+            footstepClip = newClip;
+            if (isFootstepPlaying)
+            {
+                footstepSource.Stop();
+                footstepSource.clip = footstepClip;
+                footstepSource.Play();
+            }
+        }
+    }
+
+    public void ResetFootstep()
+    {
+        if (footstepClip != originalFootstepClip)
+        {
+            footstepClip = originalFootstepClip;
+            if (isFootstepPlaying)
+            {
+                footstepSource.Stop();
+                footstepSource.clip = footstepClip;
+                footstepSource.Play();
+            }
+        }
     }
 
 
