@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MenuInicio.unity
+    path: Assets/Scenes/MenuInicio.unity
     guid: cad4a54f77a03e34fb4e6826842b2c5d
   - enabled: 1
     path: Assets/Scenes/Cienaga.unity

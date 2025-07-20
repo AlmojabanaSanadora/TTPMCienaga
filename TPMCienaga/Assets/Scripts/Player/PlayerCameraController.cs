@@ -11,6 +11,7 @@ public class PlayerCameraController : MonoBehaviour
     public float maxY = 80f;
 
     private float rotationY;
+    public bool canLook = true; // Control para habilitar/deshabilitar la cámara
 
     public void ResetVerticalRotation()
     {
@@ -18,9 +19,10 @@ public class PlayerCameraController : MonoBehaviour
         cameraTransform.localRotation = Quaternion.Euler(rotationY, 0f, 0f);
     }
 
-
     public void HandleLook(Vector2 lookInput)
     {
+        if (!canLook) return;
+
         Vector2 mouseDelta = lookInput * sensitivity;
 
         // Movimiento vertical (Pitch)
@@ -31,6 +33,5 @@ public class PlayerCameraController : MonoBehaviour
         transform.Rotate(Vector3.up * mouseDelta.x);
     }
 
-    // Por si quieres acceder con propiedad también
     public Transform CameraTransform => cameraTransform;
 }
