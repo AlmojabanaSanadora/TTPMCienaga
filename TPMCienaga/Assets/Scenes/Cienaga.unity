@@ -26811,7 +26811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 740ccd3dd6b9eec468d713f4295796ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ambientClip: {fileID: 8300000, guid: 478ac1069a08fe34ab818b650329316b, type: 3}
+  ambientClip: {fileID: 8300000, guid: 8fe518267e2c388478bc017a5712733c, type: 3}
   proximityClip: {fileID: 8300000, guid: f95410ca3047f6541b3554564a31d6c7, type: 3}
   player: {fileID: 1633019921}
   enemy: {fileID: 662648357}
@@ -34564,15 +34564,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2247228800617605107, guid: d592976252b32694fb4dc81ce5dfe56b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 460.89
+      value: 23.34
       objectReference: {fileID: 0}
     - target: {fileID: 2247228800617605107, guid: d592976252b32694fb4dc81ce5dfe56b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.21
+      value: 0.34
       objectReference: {fileID: 0}
     - target: {fileID: 2247228800617605107, guid: d592976252b32694fb4dc81ce5dfe56b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 177.03
+      value: 6.41
       objectReference: {fileID: 0}
     - target: {fileID: 2247228800617605107, guid: d592976252b32694fb4dc81ce5dfe56b, type: 3}
       propertyPath: m_LocalRotation.w
