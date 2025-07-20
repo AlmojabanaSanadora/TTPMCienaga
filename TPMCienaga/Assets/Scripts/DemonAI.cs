@@ -23,6 +23,7 @@ public class DemonAI : MonoBehaviour
     public AudioSource enemySound;
     public AudioSource screamerSound;
     private float playerSightTimer = 0f;
+    private bool hasReachedAggroZone = false;
     private bool screamerTriggered = false;
     private float damage = 34f; 
 
@@ -43,7 +44,7 @@ public class DemonAI : MonoBehaviour
 
     private float GetAggressionRange()
     {
-        float[] rangeByLevel = { 160f, 120f, 80f, 50f, 35f };
+        float[] rangeByLevel = { 350f, 250f, 200f, 150f, 80f };
         return rangeByLevel[aggressionLevel];
     }
 
@@ -81,7 +82,24 @@ public class DemonAI : MonoBehaviour
 
         isRedirecting = false;
 
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float aggressionRange = GetAggressionRange();
         playerInSightRadius = Physics.CheckSphere(transform.position, sightRadius, WhatIsPlayer);
+
+        if (!hasReachedAggroZone)
+        {
+            if (distanceToPlayer > aggressionRange)
+            {
+                StayNearPlayer();
+            }
+            else
+            {
+                hasReachedAggroZone = true; 
+            }
+
+            UpdateAnimation();
+            return;
+        }
 
         if (playerInSightRadius)
         {
@@ -91,7 +109,8 @@ public class DemonAI : MonoBehaviour
             if (!screamerTriggered && playerSightTimer >= 3f)
             {
                 TriggerScreamer();
-                TeleportAwayFromPlayer(30f, 70f);
+                TeleportAwayFromPlayer(150f, 300f);
+                hasReachedAggroZone = false; 
             }
         }
         else
@@ -99,10 +118,9 @@ public class DemonAI : MonoBehaviour
             playerSightTimer = 0f;
             ScreamerUI.SetActive(false);
             screamerTriggered = false;
-            Patrol();
+            Patrol(); 
         }
 
-        StayNearPlayer();
         UpdateAnimation();
     }
 
@@ -282,9 +300,12 @@ public class DemonAI : MonoBehaviour
     {
         while (true)
         {
-            if (playerInSightRadius || walkPointState)
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+            if ((playerInSightRadius || walkPointState) && distanceToPlayer < 12f)
             {
-                enemySound.Play();
+                if (!enemySound.isPlaying)
+                    enemySound.Play();
             }
 
             float cooldown = Random.Range(2f, 5f);

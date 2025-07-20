@@ -35,8 +35,50 @@ public class NotesUI : MonoBehaviour
 
     private void PickUpNote()
     {
-        Vector3 notePosition = playerTransform.position - playerTransform.forward * noteDistance + Vector3.up * noteHeight;
-        Quaternion noteRotation = Quaternion.LookRotation(playerTransform.forward);
+        Vector3 notePosition = playerTransform.position + playerTransform.forward * noteDistance + Vector3.up * noteHeight;
+        Quaternion noteRotation = Quaternion.LookRotation(-playerTransform.forward);
+
+        switch (gameObject.name)
+        {
+            case "nota1":
+                noteRotation = Quaternion.Euler(-180f, 0f, -180f); 
+                break;
+            case "nota2":
+                noteRotation *= Quaternion.Euler(90f, 0f, 0f); 
+                break;
+            case "nota3":
+                noteRotation *= Quaternion.Euler(90f, 0f, 0f); 
+                break;
+            case "nota4":
+                noteRotation *= Quaternion.Euler(90f, 0f, 0f); 
+                break;
+            case "nota5":
+                noteRotation *= Quaternion.Euler(90f, 0f, 0f); 
+                break;
+            case "nota6":
+                noteRotation *= Quaternion.Euler(90f, 0f, 0f); 
+                break;
+            case "nota7":
+                noteRotation *= Quaternion.Euler(90f, 0f, 0f);  
+                break;
+            case "nota8":
+                noteRotation *= Quaternion.Euler(0f, 0f, 0f);  
+                break;
+            case "nota9":
+                noteRotation *= Quaternion.Euler(-180f, -180f, 180f); 
+                break;     
+            case "nota10":
+                noteRotation *= Quaternion.Euler(-180f, -180f, 180f); 
+                break;
+            case "nota11":
+                noteRotation *= Quaternion.Euler(0f, 0f, 0f); 
+                break;
+            case "nota12":
+                noteRotation *= Quaternion.Euler(-180f, 0, 180f); 
+                break;        
+            default:
+                break;
+        }
 
         transform.position = notePosition;
         transform.rotation = noteRotation;
@@ -53,13 +95,16 @@ public class NotesUI : MonoBehaviour
         if (lantern != null)
             lantern.SetActive(false);
 
-        Time.timeScale = 0f; 
+        Time.timeScale = 0f;
     }
 
     public void HideNote()
     {
         noteUI.SetActive(false);
         Time.timeScale = 1f;
+
+        if (lantern != null)
+            lantern.SetActive(true);
 
         Debug.Log($"Destroying note: {this.gameObject.name}");
             Destroy(this.gameObject);
