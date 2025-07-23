@@ -89321,7 +89321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 2104533678}
-  sensitivity: 0.3
+  sensitivity: 0.11
   minY: -80
   maxY: 80
   canLook: 1
