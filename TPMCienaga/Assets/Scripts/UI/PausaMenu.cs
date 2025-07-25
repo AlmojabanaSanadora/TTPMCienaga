@@ -8,12 +8,19 @@ public class PausaMenu : MonoBehaviour
     public GameObject MenuSalir;
 
     private PlayerCameraController cameraController;
+    private Canvas canvasPausa;
 
     void Start()
     {
-        // Encuentra el script de la cámara automáticamente
         cameraController = Object.FindFirstObjectByType<PlayerCameraController>();
 
+        // Obtener el Canvas del menú de pausa (debe estar en el mismo objeto o en un hijo)
+        canvasPausa = ObjetoMenuPausa.GetComponent<Canvas>();
+        if (canvasPausa != null)
+        {
+            canvasPausa.overrideSorting = true;
+            canvasPausa.sortingOrder = 100; // Mayor a cualquier otro
+        }
     }
 
     void Update()
@@ -33,6 +40,11 @@ public class PausaMenu : MonoBehaviour
 
     public void ActivarPausa()
     {
+        if (canvasPausa != null)
+        {
+            canvasPausa.sortingOrder = 100; // Asegurarse de estar encima
+        }
+
         ObjetoMenuPausa.SetActive(true);
         MenuSalir.SetActive(false);
         Pausa = true;

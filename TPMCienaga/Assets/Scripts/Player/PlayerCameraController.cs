@@ -21,7 +21,8 @@ public class PlayerCameraController : MonoBehaviour
 
     public void HandleLook(Vector2 lookInput)
     {
-        if (!canLook) return;
+        // Bloqueo de movimiento de cámara si está pausado o no se permite mirar
+        if (!canLook || Time.timeScale == 0f) return;
 
         Vector2 mouseDelta = lookInput * sensitivity;
 
